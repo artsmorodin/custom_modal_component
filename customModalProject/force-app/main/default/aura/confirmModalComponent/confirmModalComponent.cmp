@@ -1,0 +1,66 @@
+<aura:component>
+
+        <aura:attribute name="canProceed" type="Boolean" default="false"/>
+        <aura:attribute name="allowClose" type="Boolean" default="true"/>
+        <aura:attribute name="showCancel" type="Boolean" default="true"/>
+
+        <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+        <div class="slds-m-around_xx-large">
+            <lightning:button variant="brand"
+                              label="Confirm first, then Submit"
+                              onclick="{! c.openModel }" 
+            />  
+            
+            <div aura:id="modal" class="slds-hide">
+                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+                    aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <div class="slds-panel__header-title">
+                            Are you sure you want to submit changes?
+                        </div>
+                        <aura:if isTrue="{!v.allowClose}">
+                            <lightning:buttonIcon iconName="utility:close" 
+                                                    variant="bare" onclick="{!c.closeModel}"
+                                                    title="close" alternativeText="Close Modal" 
+                            />
+                        </aura:if>
+                    </header>
+                    <div class="slds-modal__content slds-modal__content slds-p-horizontal_medium">
+                        <div class="slds-p-top_medium">
+                            <p class="slds-p-bottom_medium">
+                                Are you sure you commit this changes and progress to the nest step?
+                            </p>
+                            <lightning:layout>
+                                <lightning:layoutItem>
+                                    <lightning:input label="" variant="label-hidden" 
+                                                        checked="{!v.canProceed}" 
+                                                        type="checkbox"
+                                    />
+                                </lightning:layoutItem>
+                                <lightning:layoutItem>
+                                    <p>Yes, I would like continue to the next step.</p>
+                                </lightning:layoutItem>
+                            </lightning:layout>
+                        </div>
+                    </div>
+                        <footer class="slds-modal__footer slds-modal__footer_directional slds-p-bottom_medium">
+                            <lightning:layout verticalAlign="center">
+                                <lightning:layoutItem>
+                                    <lightning:button variant="brand" onclick="{!c.handleSubmit}" title="done" label="Submit" disabled="{!!v.canProceed}"/>
+                                </lightning:layoutItem>
+                                <aura:if isTrue="{!v.showCancel}">
+                                    <lightning:layoutItem padding="horizontal-small">
+                                        <lightning:button variant="neutral" onclick="{!c.closeModel}" title="Cancel"
+                                                            label="Cancel" />
+                                    </lightning:layoutItem>
+                                </aura:if>
+                            </lightning:layout>
+                        </footer>
+                    </div>
+                </section>
+                <div class="slds-backdrop slds-backdrop_open"></div>
+            </div>
+        </div>
+</aura:component>	
